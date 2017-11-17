@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Load questions by user id{% endblock %}
+
+{% block main_container %}
+<div class="span12" style="width: 98%">
+    <div class="widget">
+        <br />
+        <div class="widget-header"><i class="icon-dashboard"></i>
+            <h3>Load questions by user id</h3>
+        </div>
+        <div class="widget-content">
+            {% if error and error['common'] %}
+                <lable class="alert-danger"><b>StackOverflow error</b> - {{ error['common'] }}</lable>
+            {% endif %}
+            {% if error and error['user_id'] %}
+                <lable class="alert-danger">`user_id` - {{ error['user_id'] }}</lable>
+            {% endif %}
+            {% if error and error['page'] %}
+                <lable class="alert-danger">`page` - {{ error['page'] }}</lable>
+            {% endif %}
+            <form method="post" action="/">
+                <input type="text" value="{{ user_id }}" name="user_id" placeholder="Enter user id" pattern="[\d]+" required="required" />
+                <br />
+                <input type="text" value="{{ page }}" name="page" placeholder="Enter page" pattern="[\d]+" required="required" />
+                <br />
+                <input type="submit" value="Get">
+                <br />
+                <a href="{{ oauth_url }}">Get my questions</a>
+            </form>
+            <ul>
+            {% if data %}
+                {% for item in data['items'] %}
+                    <li>
+                        <a href="{{ item['link'] }}">{{ item['title'] }}</a>
+                    </li>
+                {% else %}
+                    <li>Questions was not found.</li>
+                {% endfor %}
+            {% endif %}
+            </ul>
+            {% if data and not data['has_more'] %} <b>No more!</b>{% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
